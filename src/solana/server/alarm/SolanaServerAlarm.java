@@ -67,55 +67,61 @@ public class SolanaServerAlarm {
 
         String json = "{\"jsonrpc\":\"2.0\",\"id\":1, \"method\":\"getHealth\"}";
 
-        JSONObject jo = makeHttpRequest(SERVERURL, json);
+        try {
 
-        if (jo.has("result")) {
+            JSONObject jo = makeHttpRequest(SERVERURL, json);
 
-            String ok = jo.getString("result");
+            if (jo.has("result")) {
 
-            if (ok.trim().toLowerCase().equals("ok")) {
-                                
-                System.out.println("SERVER IS AOK SO NO ALARM EMAIL WAS SENT");
-                
-            } else {
+                String ok = jo.getString("result");
 
-                String payload = "YOUR SERVER IS REPORTING A NON-HEALTHY STATUS"
-                        + "\r\n\r\n"
-                        + "THE EXACT MESSAGE THAT THE SERVER REPORTED:"
-                        + "\r\n\r\n";
+                if (ok.trim().toLowerCase().equals("ok")) {
 
-                JSONObject jodata = null;
-                String data = "";
+                    System.out.println("SERVER IS AOK SO NO ALARM EMAIL WAS SENT");
 
-                if (jo.has("error")) {
+                } else {
 
-                    JSONObject joerror = jo.getJSONObject("error");
+                    String payload = "YOUR SERVER IS REPORTING A NON-HEALTHY STATUS"
+                            + "\r\n\r\n"
+                            + "THE EXACT MESSAGE THAT THE SERVER REPORTED:"
+                            + "\r\n\r\n";
 
-                    if (joerror.has("data")) {
+                    JSONObject jodata = null;
+                    String data = "";
 
-                        jodata = joerror.getJSONObject("data");
+                    if (jo.has("error")) {
 
-                        if (jodata.has("numSlotsBehind")) {
+                        JSONObject joerror = jo.getJSONObject("error");
 
-                            data = "NUMBER OF SLOTS BEHIND: " + jodata.getInt("numSlotsBehind");
+                        if (joerror.has("data")) {
+
+                            jodata = joerror.getJSONObject("data");
+
+                            if (jodata.has("numSlotsBehind")) {
+
+                                data = "NUMBER OF SLOTS BEHIND: " + jodata.getInt("numSlotsBehind");
+                            }
+                        }
+
+                        if (joerror.has("message")) {
+
+                            payload += joerror.getString("message");
+
+                        }
+
+                        if (data.trim().length() > 0) {
+
+                            payload += "\r\n\r\n" + data;
                         }
                     }
 
-                    if (joerror.has("message")) {
-
-                        payload += joerror.getString("message");
-
-                    }
-
-                    if (data.trim().length() > 0) {
-
-                        payload += "\r\n\r\n" + data;
-                    }
+                    // SEND EMAIL NOW AS NO OK WAS FOUND 
+                    email(EMAIL, "SOLANA SERVER HEALTH ERROR REPORT", payload, false);
                 }
-
-                // SEND EMAIL NOW AS NO OK WAS FOUND 
-                email(EMAIL, "SOLANA SERVER HEALTH ERROR REPORT", payload, false);
             }
+        } catch (Exception e) {
+
+            email(EMAIL, "SOLANA SERVER ALARM ERROR - BIG ERROR INSIDE MAIN()", "ERROR - BIG ERROR INSIDE MAIN():" + "\r\n" + e.getMessage(), false);
         }
     }
 
@@ -150,6 +156,9 @@ public class SolanaServerAlarm {
                 }
             }
         } catch (Exception e) {
+
+            email(EMAIL, "SOLANA SERVER ALARM ERROR INSIDE MAKEHTTPREQUEST()", "ERROR:" + "\r\n" + e.getMessage(), false);
+
         }
 
         // try parse the string to a JSON object
@@ -189,4 +198,3 @@ public class SolanaServerAlarm {
     }
 
 }
-
