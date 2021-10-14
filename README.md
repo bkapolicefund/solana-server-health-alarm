@@ -25,6 +25,21 @@ another app to do this with a solana Shell call inside java
 
 NOTE: YOU MUST INSTALL THE JAVA JDK AND THE POSTFIX MTA
 
+BUT BEFORE YOU SET UP POSTFIX YOU SHOULD SET THE HOSTNAME AND
+MAILNAME FIRST LIKE THIS
+
+put the domain name only with no subdomain in the /etc/hostname file
+
+like this
+
+    echo 'mydomain.com' > /etc/hostname
+
+then set the hostname in the server memory
+
+    hostname -F /etc/hostname
+
+THEN ADD THE POSTFIX MTA
+
     apt install postfix openjdk-11-jdk
 
 be sure to set the mailname of your validator postfix mta to 
