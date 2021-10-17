@@ -43,11 +43,11 @@ public class SolanaServerAlarm {
             System.out.println("USE THE NORMAL URI FOR EXAMPLE:");
             System.out.println("http://127.0.0.1:8899");
             System.out.println("****************************************");
-            System.out.println("THE SECOND COMMAND LINE PARAMETER MUST BE THE EMAIL ADDRESS TO SEND THE ERROR REPORT TO");
-            System.out.println("****************************************");
-            System.out.println("THE THIRD COMMAND LINE PARAMETER MUST BE THE SMTP SERVER IP ADDRESS AND PORT NUMBER TO SEND THE EMAIL TO");
+            System.out.println("THE SECOND COMMAND LINE PARAMETER MUST BE THE SMTP SERVER IP ADDRESS AND PORT NUMBER TO SEND THE EMAIL TO");
             System.out.println("USE THE NORMAL URI FOR EXAMPLE:");
             System.out.println("http://myemailserver.com:25");            
+            System.out.println("****************************************");
+            System.out.println("THE THIRD COMMAND LINE PARAMETER MUST BE THE EMAIL ADDRESS TO SEND THE ERROR REPORT TO");
             System.out.println("****************************************");
             System.out.println("USE A LINE IN THE CRONTAB TO EXECUTE THIS PROGRAM EVERY FEW MINUTES SO THAT YOU WILL GET AN EMAIL AS SOON AS A PROBLEM IS DETECTED");
             System.out.println("****************************************");
@@ -61,9 +61,9 @@ public class SolanaServerAlarm {
             System.exit(1);
         }
 
-        SERVERURL = args[0];
-        EMAIL = args[1];
-        MAILSERVER= args[2];
+        SERVERURL = args[0];        
+        MAILSERVER= args[1];
+        EMAIL = args[2];
         
         System.getProperties();
         //////////////////////////////////////////////////////////////////////////////////////////
