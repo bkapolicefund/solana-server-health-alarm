@@ -1,6 +1,31 @@
 This is a Java application that will email you when it sees
 that the validator node is not caught up and has bad health.
 
+Note there are 3 parameters in this version when you call this java 
+app and they must all be on the command line or error will display:
+
+1) URL of validator node including API port to use with colon separating the port
+like so: 
+
+    http://mydomain.com:8899 
+or 
+    http://123.123.123.123:8899
+
+2) Email address to send the Health Alarm to in normal email form.
+
+3) Email Server IP and SMTP port with colon between like so:
+
+    http://mydomain.com:8899 
+or 
+    http://123.123.123.123:8899
+
+NOTE: As pointed out by another node operator yesterday, do not run 
+this on the validator node itself in case of an OS crash or hardware
+failure. So run this on your mail server if you have one and then 
+you don't need to worry about installing postfix as the email server
+will be just 127.0.0.1 which is localhost unless your mail server has
+its port 25 only binded to the outbound interface IP address.
+
 A sample shell script to call this is seen in this repo as the file chksvr.sh 
 and you will see it uses the URL of your server and port number as the
 first command line parameter. Then your email address is the second parameter.
@@ -40,7 +65,7 @@ then set the hostname in the server memory
 
 THEN ADD THE POSTFIX MTA
 
-    apt install postfix openjdk-11-jdk
+    apt install postfix openjdk-11-jdk 
 
 be sure to set the mailname of your validator postfix mta to 
 only the domain name that you own and do not put subdomains
@@ -57,6 +82,15 @@ up and just select the internet server type if you do not want to
 relay the emails to your email server directly then. one of the
 postfix setup choices will be to set up to relay all email to your
 own email server too.
+
+test email once its set up with the mail utility in unix shell like this:
+
+    mail youremailaddress@yourdomain.com 
+
+
+debug postfix errors looking in the mail log in file here:
+
+    /var/log/mail.log
 
 you may have trouble sending email from your validator node for three reasons:
 

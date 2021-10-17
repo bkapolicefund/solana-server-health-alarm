@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class SolanaServerAlarm {
 
-    private static String MAILSERVER = "127.0.0.1";
+    private static String MAILSERVER = "127.0.0.1:25";
     private static String EMAIL = "";
     private static String SERVERURL = "";
     private static String LL = "";
@@ -37,13 +37,17 @@ public class SolanaServerAlarm {
      */
     public static void main(String[] args) {
 
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.out.println("****************************************");
             System.out.println("ERROR - YOU MUST SPECIFY BOTH THE URL INCLUDING THE RPC PORT TO USE TO CHECK THE SERVER HEALTH");
             System.out.println("USE THE NORMAL URI FOR EXAMPLE:");
             System.out.println("http://127.0.0.1:8899");
             System.out.println("****************************************");
             System.out.println("THE SECOND COMMAND LINE PARAMETER MUST BE THE EMAIL ADDRESS TO SEND THE ERROR REPORT TO");
+            System.out.println("****************************************");
+            System.out.println("THE THIRD COMMAND LINE PARAMETER MUST BE THE SMTP SERVER IP ADDRESS AND PORT NUMBER TO SEND THE EMAIL TO");
+            System.out.println("USE THE NORMAL URI FOR EXAMPLE:");
+            System.out.println("http://myemailserver.com:25");            
             System.out.println("****************************************");
             System.out.println("USE A LINE IN THE CRONTAB TO EXECUTE THIS PROGRAM EVERY FEW MINUTES SO THAT YOU WILL GET AN EMAIL AS SOON AS A PROBLEM IS DETECTED");
             System.out.println("****************************************");
@@ -59,7 +63,8 @@ public class SolanaServerAlarm {
 
         SERVERURL = args[0];
         EMAIL = args[1];
-
+        MAILSERVER= args[2];
+        
         System.getProperties();
         //////////////////////////////////////////////////////////////////////////////////////////
         DS = System.getProperty("file.separator");
